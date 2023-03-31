@@ -1,0 +1,228 @@
+*** Settings ***
+Library           DatabaseLibrary
+
+*** Variables ***
+${dbname}         mitrovski
+${dbuser}         root
+${dbpasswd}       ${EMPTY}
+${dbhost}         localhost
+${dbport}         3306
+@{queryResults}
+
+*** Test Cases ***
+TC1
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Check If Exists In Database    SELECT * FROM modeli
+    @{queryResults}    Query    SELECT * FROM modeli
+
+TC2
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Check If Exists In Database    SELECT * FROM marki
+    @{queryResults}    Query    SELECT * FROM marki
+
+TC3
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Check If Exists In Database    Select * From marki order by marki_name DESC
+    @{queryResults}    Query    Select * From marki order by marki_name DESC
+
+TC4
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Check If Exists In Database    SELECT * FROM marki WHERE eu=0
+    @{queryResults}    Query    SELECT * FROM marki WHERE eu=0
+
+TC5
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Table must Exist    marki
+    Execute Sql String    Insert into marki(marki_name,country,eu) values('Audi','D',1)
+
+TC6
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Check If Exists In Database    Select * From marki WHERE country LIKE 'D' ORDER BY marki_name ASC
+    @{queryResults}    Query    Select * From marki WHERE country LIKE 'D' ORDER BY marki_name ASC
+
+TC7
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Check If Exists In Database    Select * From marki WHERE country LIKE 'D' or country like 'H'
+    @{queryResults}    Query    Select * From marki WHERE country LIKE 'D' or country like 'H'
+
+TC8
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Table must Exist    modeli
+    Execute Sql String    INSERT INTO modeli(marki_id,modeli_name,price,color) Values(1,'A4',2400,'#FF00FF')
+
+TC9
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Check If Exists In Database    Select * from modeli    WHERE color LIKE '#FF00FF'
+    @{queryResults}    Query    Select * from modeli    WHERE color LIKE '#FFOOFF'
+
+TC10
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Check If Exists In Database    Select * from modeli where price =(select min(price)from modeli)
+    @{queryResults}    Query    Select * from modeli where price =(select min(price)from modeli)
+
+TC11
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Check If Exists In Database    Select * from modeli where price =(select max(price)from modeli)
+    @{queryResults}    Query    Select * from modeli where price =(select max(price)from modeli)
+
+TC12
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Check If Exists In Database    Select * from modeli where modeli_name LIKE 'A%'
+    @{queryResults}    Query    Select * from modeli where modeli_name LIKE 'A%'
+
+TC13
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Check If Exists In Database    SELECT * FROM modeli WHERE price BETWEEN 2400 AND 10000
+    @{queryResults}    Query    SELECT * FROM modeli WHERE price BETWEEN 2400 AND 10000
+
+TC14
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Check If Exists In Database    SELECT * FROM modeli WHERE color='#FF00FF' and price>=2800
+    @{queryResults}    Query    SELECT * FROM modeli WHERE color='#FF00FF' and price>=2800
+
+TC15
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Check If Exists In Database    SELECT marki.country,SUM(modeli.price) As Promet FROM modeli INNER JOIN marki ON modeli.marki_id=marki.marki_id GROUP BY marki.country ORDER BY Promet DESC LIMIT 3
+    @{queryResults}    Query    SELECT marki.country,SUM(modeli.price) As Promet FROM modeli INNER JOIN marki ON modeli.marki_id=marki.marki_id GROUP BY marki.country ORDER BY Promet DESC LIMIT 3
+
+TC16
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Check If Exists In Database    SELECT marki.country,SUM(modeli.price) As Promet FROM modeli INNER JOIN marki ON modeli.marki_id=marki.marki_id WHERE marki.eu LIKE '1' GROUP BY marki.country ORDER BY Promet DESC LIMIT 3
+    @{queryResults}    Query    SELECT marki.country,SUM(modeli.price) As Promet FROM modeli INNER JOIN marki ON modeli.marki_id=marki.marki_id WHERE marki.eu LIKE '1' GROUP BY marki.country ORDER BY Promet DESC LIMIT 3
+
+TC17
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Check If Exists In Database    SELECT * FROM modeli INNER JOIN marki ON modeli.marki_id=marki.marki_id WHERE marki.country LIKE 'D' ORDER BY modeli.price DESC
+    @{queryResults}    Query    SELECT * FROM modeli INNER JOIN marki ON modeli.marki_id=marki.marki_id WHERE marki.country LIKE 'D' ORDER BY modeli.price DESC
+
+TC18
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Check If Exists In Database    SELECT * FROM modeli INNER JOIN marki WHERE marki.country LIKE 'D' AND modeli.price>=2400 AND modeli.price<=10000 ORDER BY price ASC
+    @{queryResults}    Query    SELECT * FROM modeli INNER JOIN marki WHERE marki.country LIKE 'D' AND modeli.price>=2400 AND modeli.price<=10000 ORDER BY price ASC
+
+TC19
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Check If Exists In Database    SELECT modeli.* FROM modeli INNER JOIN marki ON modeli.marki_id = marki.marki_id WHERE marki.country like 'FR' ORDER BY modeli.price DESC
+    @{queryResults}    Query    SELECT modeli.* FROM modeli INNER JOIN marki ON modeli.marki_id = marki.marki_id WHERE marki.country like 'FR' ORDER BY modeli.price DESC
+
+TC20
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Table Must Exist    modeli
+    Check If Exists In Database    SELECT * FROM modeli
+    @{queryResults}    Query    SELECT * FROM modeli
+    FOR    ${row}    IN    @{queryResults}
+        Log    ${row}
+    END
+
+TC21
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Table Must Exist    marki
+    Check If Exists In Database    SELECT * FROM marki
+    @{queryResults}    Query    SELECT * FROM marki
+    FOR    ${row}    IN    @{queryResults}
+        Log    ${row}
+    END
+
+TC_SP_select_marki
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    @{queryResults}    Query    call _select_marki()
+    FOR    ${row}    IN    @{queryResults}
+        Log    ${row}
+    END
+
+TC_SP_select_modeli
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    @{queryResults}    Query    call _select_modeli()
+    FOR    ${row}    IN    @{queryResults}
+        Log    ${row}
+    END
+
+TC_SP_select_markiVonEu
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    @{queryResults}    Query    call _select_marki_vonEU()
+    FOR    ${row}    IN    @{queryResults}
+        Log    ${row}
+    END
+
+TC_SP_select_modeli_boja
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    @{queryResults}    Query    call _select_modeli_boja('#FF00FF')
+    FOR    ${row}    IN    @{queryResults}
+        Log    ${row}
+    END
+
+TC_SP_update_marki
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    @{queryResults}    Query    call _update_marki(1,'Audi','D',1)
+    FOR    ${row}    IN    @{queryResults}
+        Log    ${row}
+    END
+
+TC_SP_select_drzavi
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    @{queryResults}    Query    call _select_drzavi(2)
+    FOR    ${row}    IN    @{queryResults}
+        Log    ${row}
+    END
+
+TC_SP_select_marki_bycountry1
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    @{queryResults}    Query    call _select_marki_bycountry1('FR','D')
+    FOR    ${row}    IN    @{queryResults}
+        Log    ${row}
+    END
+
+TC_SP_select_marki_bycountry
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    @{queryResults}    Query    call _select_marki_by_country('FR')
+    FOR    ${row}    IN    @{queryResults}
+        Log    ${row}
+    END
+
+TC_SP_select_markiDESC
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    @{queryResults}    Query    call _select_markiDESC()
+    FOR    ${row}    IN    @{queryResults}
+        Log    ${row}
+    END
+
+TC_SP_select_markiASC
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    @{queryResults}    Query    call _select_markiASC('CITROEN','FR')
+    FOR    ${row}    IN    @{queryResults}
+        Log    ${row}
+    END
+
+TC_SP_delete_courses
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    @{queryResults}    Query    call _delete_courses(1)
+    FOR    ${row}    IN    @{queryResults}
+        Log    ${row}
+    END
+
+TC_SP_delete_students
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    @{queryResults}    Query    call _select_students()
+    FOR    ${row}    IN    @{queryResults}
+        Log    ${row}
+    END
+
+TC_IF_select_marki
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Check If Exists In Database    call _select_marki()
+    @{queryResults}    Query    call _select_marki()
+    FOR    ${row}    IN    @{queryResults}
+        IF    ${row} =="Audi"
+        Log    ${row}
+    END
+    END
+
+TC_IF_select_modeli
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Check If Exists In Database    call _select_modeli()
+    @{queryResults}    Query    call _select_modeli()
+    FOR    ${row}    IN    @{queryResults}
+        IF    ${row} =="A4"
+        Log
+    END
+    END
