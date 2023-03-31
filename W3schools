@@ -1,0 +1,116 @@
+*** Settings ***
+Library           SeleniumLibrary
+
+*** Variables ***
+${att}            ${EMPTY}
+
+*** Test Cases ***
+TC1
+    Open Browser    https://www.w3schools.com/    chrome
+
+TC2
+    Open Browser    https://www.w3schools.com/    chrome
+    Sleep    2
+    Maximize Browser Window
+    Input Text    id:search2    Selenium tutorial
+    Sleep    2
+    Click Button    id:learntocode_searchbtn
+
+TC51
+    Open Browser    https://www.w3schools.com/html/default.asp    chrome
+    Sleep    2
+    Maximize Browser Window
+    Click Element    xpath://html/body/div[4]/div/div[1]/a[3]
+    Close Browser
+
+TC61
+    Open Browser    https://www.w3schools.com/css/default.asp    chrome
+    Sleep    2
+    Maximize Browser Window
+    Click Element    xpath://html/body/div[4]/div/div[1]/a[4]
+    Close Browser
+
+TC71
+    Open Browser    https://www.w3schools.com/js/default.asp    chrome
+    Sleep    2
+    Maximize Browser Window
+    Click Element    xpath://html/body/div[4]/div/div[1]/a[5]
+    Close Browser
+
+TC31
+    Open Browser    https://www.w3schools.com/sql/default.asp    chrome
+    Sleep    2
+    Maximize Browser Window
+    Click Element    xpath://html/body/div[4]/div/div[1]/a[6]
+    Close Browser
+
+TC81
+    Open Browser    https://www.w3schools.com/python/default.asp    chrome
+    Sleep    2
+    Maximize Browser Window
+    Click Element    xpath://html/body/div[4]/div/div[1]/a[7]
+    Close Browser
+
+TC9
+    Open Browser    https://www.w3schools.com/    chrome
+    Sleep    2
+    Maximize Browser Window
+    Input Text    id:search2    HTML tutorial
+    Sleep    2
+    Click Button    id:learntocode_searchbtn
+
+TC10
+    Open Browser    https://www.w3schools.com/    chrome
+    Sleep    2
+    Maximize Browser Window
+    Input Text    id:search2    CSS
+    Sleep    2
+    Click Button    id:learntocode_searchbtn
+
+TC11
+    Open Browser    https://www.w3schools.com/    chrome
+    Sleep    2
+    Maximize Browser Window
+    Input Text    id:search2    JAVASKRIPT
+    Sleep    2
+    Click Button    id:learntocode_searchbtn
+
+TC12
+    Open Browser    https://www.w3schools.com/    chrome
+    Sleep    2
+    Maximize Browser Window
+    Input Text    id:search2    SQL
+    Sleep    2
+    Click Button    id:learntocode_searchbtn
+
+TC13
+    Open Browser    https://www.w3schools.com/    chrome
+    Sleep    2
+    Maximize Browser Window
+    Input Text    id:search2    PYTHON
+    Sleep    2
+    Click Button    id:learntocode_searchbtn
+
+TC14
+    Open Browser    https://www.w3schools.com/    chrome
+    Sleep    2
+    Maximize Browser Window
+    Input Text    id:search2    JAVA
+    Sleep    2
+    Click Button    id:learntocode_searchbtn
+
+TC15
+    Open Browser    https://www.w3schools.com/    chrome
+    Sleep    2
+    Maximize Browser Window
+    Input Text    id:search2    PHP
+    Sleep    2
+    Click Button    id:learntocode_searchbtn
+
+TC16
+    Open Browser    https://www.w3schools.com/    chrome
+    Sleep    2
+    Maximize Browser Window
+    Input Text    id:search2    BOOTSTRAP
+    Click Button    id:learntocode_searchbtn
+    Close Browser
