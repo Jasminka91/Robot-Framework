@@ -1,0 +1,61 @@
+*** Settings ***
+Library           SeleniumLibrary
+
+*** Variables ***
+${URL}            https://demowebshop.tricentis.com/
+
+*** Test Cases ***
+Register and write review
+    Open Browser    https://demowebshop.tricentis.com/    chrome
+    Maximize Browser Window
+    Sleep    2
+    Click Link    Link:Log in
+    Click Button    class=register-button
+    Select Radio Button    Gender    F
+    Input text    id=FirstName    Jasmina
+    Input Text    id=LastName    Tanevska
+    Input Text    id=Email    tanevskajas@gmail.com
+    Sleep    2
+    Input Text    name=Password    1234567
+    Input Text    name=ConfirmPassword    1234567
+    Click Button    id=register-button
+    Click Button    class=register-continue-button
+    Sleep    2
+    Input Text    id=small-searchterms    DIAMOND TENNIS BRACELET
+    Click Button    class=search-box-button
+    Sleep    2
+    Click Link    Link:Books
+    Sleep    5
+    Select From List By Index    products-orderby    2
+    Click Element    xpath://body/div[4]/div[1]/div[4]/div[2]/div[2]/div[2]/div[3]/div[3]/div[1]/div[1]/a[1]/img[1]
+    Click Element    xpath://html/body/div[4]/div[1]/div[4]/div[2]/div[2]/div/form/div/div[1]/div[2]/div[4]/div[2]/a[1]
+    Sleep    2
+    Input Text    id=AddProductReview_Title    Too Stupid
+    Input Text    id=AddProductReview_ReviewText    Who knew a story could be so disgusting and hilarious at the same time?
+    Select Radio Button    AddProductReview.Rating    2
+    Click Button    name=add-review
+    Click Element    xpath://a[contains(text(),'Log out')]
+    Close Browser
+
+Login,order and write email
+    Open Browser    ${URL}    chrome
+    Maximize Browser Window
+    Sleep    2
+    Click Element    class=ico-login
+    Input Text    name=Email    tanevskajas@gmail.com
+    Input Text    name=Password    1234567
+    Click Element    xpath://body/div[4]/div[1]/div[4]/div[2]/div[1]/div[2]/div[1]/div[2]/div[2]/form[1]/div[5]/input[1]
+    Sleep    2
+    Click Element    xpath://body/div[4]/div[1]/div[2]/ul[1]/li[4]/a[1]
+    Click Element    xpath://body/div[4]/div[1]/div[4]/div[2]/div[2]/div[2]/div[3]/div[1]/div[1]/div[1]/a[1]/img[1]
+    Select From List By Index    product_attribute_5_7_1    1
+    Click Button    id=add-to-cart-button-5
+    Click Element    xpath://body/div[4]/div[1]/div[1]/div[1]/a[1]/img[1]
+    Click Element    xpath://body/div[4]/div[1]/div[4]/div[3]/div[1]/div[1]/div[3]/div[3]/div[1]/div[1]/a[1]/img[1]
+    Click Button    xpath://body/div[4]/div[1]/div[4]/div[2]/div[2]/div[1]/form[1]/div[1]/div[1]/div[2]/div[7]/input[1]
+    Input Text    name=FriendEmail    marija@gmail.com
+    Input Text    name=PersonalMessage    what is your opinion, should i buy this computer?
+    Click Button    name=send-email
+    Sleep    2
+    Click Element    xpath://a[contains(text(),'Log out')]
+    Close Browser
