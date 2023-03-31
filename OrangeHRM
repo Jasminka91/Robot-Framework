@@ -1,0 +1,46 @@
+
+TC_orangehrm_xpath
+    Open Browser    https://opensource-demo.orangehrmlive.com/web/index.php/auth/login    chrome
+    Maximize Browser Window
+    Sleep    2
+    Input text    xpath://html/body/div/div[1]/div/div[1]/div/div[2]/div[2]/form/div[1]/div/div[2]/input    Admin
+    Input text    xpath://html/body/div/div[1]/div/div[1]/div/div[2]/div[2]/form/div[2]/div/div[2]/input    admin123
+    Sleep    2
+    Click Button    xpath://html/body/div/div[1]/div/div[1]/div/div[2]/div[2]/form/div[3]/button
+    Close Browser
+
+TC_xpath_admin_menue
+    Open Browser    https://opensource-demo.orangehrmlive.com/web/index.php/auth/login    chrome
+    Maximize Browser Window
+    Sleep    2
+    Input text    xpath://html/body/div/div[1]/div/div[1]/div/div[2]/div[2]/form/div[1]/div/div[2]/input    Admin
+    Input text    xpath://html/body/div/div[1]/div/div[1]/div/div[2]/div[2]/form/div[2]/div/div[2]/input    admin123
+    Sleep    2
+    Click Button    xpath://html/body/div/div[1]/div/div[1]/div/div[2]/div[2]/form/div[3]/button
+    Sleep    2
+    Click Link    link:Admin
+    Close Browser
+
+TC_xpath_without_u
+    Open Browser    https://opensource-demo.orangehrmlive.com/web/index.php/auth/login    chrome
+    Maximize Browser Window
+    Sleep    2
+    Input text    xpath://html/body/div/div[1]/div/div[1]/div/div[2]/div[2]/form/div[2]/div/div[2]/input    admin123
+    Sleep    2
+    Click Button    xpath://html/body/div/div[1]/div/div[1]/div/div[2]/div[2]/form/div[3]/button
+    Close Browser
+
+TC_xpath_without_p
+    Open Browser    https://opensource-demo.orangehrmlive.com/web/index.php/auth/login    chrome
+    Maximize Browser Window
+    Sleep    2
+    Input text    xpath://html/body/div/div[1]/div/div[1]/div/div[2]/div[2]/form/div[1]/div/div[2]/input    Admin
+    Click Button    xpath://html/body/div/div[1]/div/div[1]/div/div[2]/div[2]/form/div[3]/button
+    Close Browser
+
+TC_xpath_without_u.p
+    Open Browser    https://opensource-demo.orangehrmlive.com/web/index.php/auth/login    chrome
+    Maximize Browser Window
+    Sleep    2
+    Click Button    xpath://html/body/div/div[1]/div/div[1]/div/div[2]/div[2]/form/div[3]/button
+    Close Browser
