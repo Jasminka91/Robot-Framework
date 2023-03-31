@@ -1,0 +1,106 @@
+*** Settings ***
+Library           DatabaseLibrary
+
+*** Variables ***
+${dbname}         tanevska
+${dbuser}         root
+${dbpasswd}       ${EMPTY}
+${dbhost}         localhost
+${dbport}         3306
+@{queryResults}
+
+*** Test Cases ***
+TC_select_books
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Table Must Exist    books
+    Check If Exists In Database    SELECT * FROM books
+    @{queryResults}    Query    SELECT * FROM books
+    FOR    ${row}    IN    @{queryResults}
+        Log    ${row}
+    END
+
+TC_select_authors
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Table Must Exist    authors
+    Check If Exists In Database    SELECT * FROM authors
+    @{queryResults}    Query    SELECT * FROM authors
+    FOR    ${row}    IN    @{queryResults}
+        Log    ${row}
+    END
+
+TC_left_join
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Check If Exists In Database    SELECT * FROM books LEFT JOIN authors ON books.authors_id=authors.authors_id;
+    @{queryResults}    Query    SELECT * FROM books LEFT JOIN authors ON books.authors_id=authors.authors_id;
+    FOR    ${row}    IN    @{queryResults}
+        Log    ${row}
+    END
+
+TC_right_join
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Check If Exists In Database    SELECT * FROM books RIGHT JOIN authors ON books.authors_id=authors.authors_id;
+    @{queryResults}    Query    SELECT * FROM books RIGHT JOIN authors ON books.authors_id=authors.authors_id;
+    FOR    ${row}    IN    @{queryResults}
+        Log    ${row}
+    END
+
+TC_inner_join
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Check If Exists In Database    SELECT * FROM books INNER JOIN authors ON books.authors_id=authors.authors_id;
+    @{queryResults}    Query    SELECT * FROM books INNER JOIN authors ON books.authors_id=authors.authors_id;
+    FOR    ${row}    IN    @{queryResults}
+        Log    ${row}
+    END
+
+TC_SP_books
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    @{queryResults}    Query    call _select_books();
+    FOR    ${row}    IN    @{queryResults}
+        Log    ${row}
+    END
+
+TC_SP_authors
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    @{queryResults}    Query    call _select_authors();
+    FOR    ${row}    IN    @{queryResults}
+        Log    ${row}
+    END
+
+TC_SP_delete_books
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    @{queryResults}    Query    call _delete_books(10);
+    FOR    ${row}    IN    @{queryResults}
+        Log    ${row}
+    END
+
+TC_genres
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Check If Exists In Database    SELECT * FROM authors WHERE genres='romance';
+    @{queryResults}    Query    SELECT * FROM authors WHERE genres='romance';
+    FOR    ${row}    IN    @{queryResults}
+        Log    ${row}
+    END
+
+TC_orderby_ASC
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Check If Exists In Database    SELECT * FROM books ORDER BY total_pages ASC;
+    @{queryResults}    Query    SELECT * FROM books ORDER BY total_pages ASC;
+    FOR    ${row}    IN    @{queryResults}
+        Log    ${row}
+    END
+
+TC_orderby_DESC
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Check If Exists In Database    SELECT * FROM books ORDER BY total_pages DESC;
+    @{queryResults}    Query    SELECT * FROM books ORDER BY total_pages DESC;
+    FOR    ${row}    IN    @{queryResults}
+        Log    ${row}
+    END
+
+TC_select_country
+    Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpasswd}    ${dbhost}    ${dbport}
+    Check If Exists In Database    SELECT * FROM authors WHERE country LIKE 'Germany';
+    @{queryResults}    Query    SELECT * FROM authors WHERE country LIKE 'Germany';
+    FOR    ${row}    IN    @{queryResults}
+        Log    ${row}
+    END
